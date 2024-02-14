@@ -1,30 +1,8 @@
-from typing import List, Tuple
-
-class Lien:
-	noeuds: Tuple[any, any] # TODO type hint
-	distance: int
-	pheromone: float
-
-	def __init__(self, noeud1, noeud2, distance = 1):
-		self.noeuds = (noeud1, noeud2)
-		self.distance = distance
-		pheromone = 1.
-
-	def Passage(self, a: float):
-		self.pheromone += a / self.distance
-
-class Noeud:
-	label: str
-	connexions: List[Lien]
-
-	def __init__(self, label: str):
-		self.label = label
-
-	def Connecte(self, other, distance: int = 1): # TODO type hint
-		lien = Lien(self,other, distance)
-		self.connexions.append(lien)
-		other.connexions.append(lien)
-		return lien
+from typing import List
+from fourmi import Fourmi
+from random import randint
+from lien import Lien
+from noeud import Noeud, strChemin
 
 class Graphe:
 	noeuds: List[Noeud]
@@ -45,3 +23,16 @@ class Graphe:
 	def Evaporer(self):
 		for lien in self.liens:
 			lien.pheromone *= 1-self.evaporation
+
+	def LancerFourmi(self, depart: Noeud):
+		fourmi = Fourmi(depart)
+		while(True):
+			if not fourmi.Avancer(self.a, self.b):
+				break
+		if(len(fourmi.aVoir) == 0):
+			print(f"Chemin trouvé : {strChemin(fourmi.chemin)}")
+
+	def LancerFourmis(self, iterations: int):
+		for i in range(iterations):
+			self.LancerFourmi(self.noeuds[randint(0,len(self.noeuds-1))])
+			self.Evaporer()

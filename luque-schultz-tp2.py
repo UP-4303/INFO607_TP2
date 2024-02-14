@@ -1,9 +1,12 @@
 # Mattéo LUQUE L3 CMI Informatique
 # Paul SCHULTZ L3 Informatique groupe 1
 
-from graphe import *
+from typing import List
+from graphe import Graphe
+from lien import Lien
+from noeud import Noeud
 
-if __name__ == "main":
+if __name__ == "__main__":
 	noeuds: List[Noeud] = [Noeud("A"), Noeud("B"), Noeud("C"), Noeud("D"), Noeud("E"), Noeud("F"), Noeud("G")]
 	liens: List[Lien]
 	liens.append(noeuds[0].Connecte(noeuds[1], 2))
@@ -30,3 +33,5 @@ if __name__ == "main":
 	# Chemin le plus court pour le voyageur de commerce en partant de A : A->B->D->G->F->E->C (distance : 10)
 
 	graphe: Graphe = Graphe(noeuds, liens)
+	graphe.LancerFourmis(10)
+	print("Lancées !")
