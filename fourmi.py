@@ -8,11 +8,15 @@ class Fourmi :
 	aVoir: List[Noeud] # TODO Possibilité de passer plusieurs fois par ville, en fonction de q
 	depart: Noeud
 	chemin: List[Noeud]
+	distanceParcourue: int
 
 	def __init__(self, noeuds: List[Noeud], position: Noeud):
 		self.position = position
 		self.aVoir = noeuds
 		self.depart = position
+		self.aVoir.remove(self.depart)
+		self.chemin = []
+		self.distanceParcourue = 0
 		self.chemin.append(position)
 
 	def __str__(self):
@@ -55,8 +59,14 @@ class Fourmi :
 		else:
 			self.position = lien.noeuds[0]
 		
+		self.distanceParcourue += lien.distance
 		self.aVoir.remove(self.position)
 		self.chemin.append(self.position)
+
+		# Il faut que la fourmi retourne à son point de départ
+		# Il ne faut pas l'ajouter au début, sinon elle pourrait y retourner dès son deuxième mouvement
+		if self.aVoir == [] and self.position != self.depart:
+			self.aVoir.append(self.depart)
 		
 		return True
 

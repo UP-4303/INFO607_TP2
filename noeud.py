@@ -4,12 +4,17 @@ from lien import Lien
 class Noeud:
 	label: str
 	connexions: List[Lien]
+	x:float
+	y:float
 
 	def __init__(self, label: str):
 		self.label = label
+		self.connexions = []
+		self.x = 0
+		self.y = 0
 
-	def Connecte(self, other, distance: int = 1): # TODO type hint
-		lien = Lien(self,other, distance)
+	def Connecte(self, other, distance: int = 1, maxPheromones: float = 10): # TODO type hint
+		lien = Lien(self,other, distance, maxPheromones= maxPheromones)
 		self.connexions.append(lien)
 		other.connexions.append(lien)
 		return lien
