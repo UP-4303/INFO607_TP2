@@ -8,7 +8,10 @@ class Lien:
 	def __init__(self, noeud1, noeud2, distance = 1):
 		self.noeuds = (noeud1, noeud2)
 		self.distance = distance
-		pheromone = 0.
+		self.pheromone = 0.
+
+	def __str__(self):
+		return f"{self.noeuds[0].label} - {self.noeuds[1].label}, {self.distance}, {self.pheromone}"
 
 	def Passage(self, a: float):
 		self.pheromone += a / self.distance
@@ -19,6 +22,10 @@ class Noeud:
 
 	def __init__(self, label: str):
 		self.label = label
+		self.connexions = []
+
+	def __str__(self):
+		return f"(Noeud: {self.label})"
 
 	def Connecte(self, other, distance: int = 1): # TODO type hint
 		lien = Lien(self,other, distance)
@@ -41,6 +48,9 @@ class Graphe:
 		self.q = q
 		self.a = a
 		self.b = b
+
+	def __str__(self):
+		return "test"
 
 	def Evaporer(self):
 		for lien in self.liens:
