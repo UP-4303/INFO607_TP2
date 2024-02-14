@@ -8,7 +8,7 @@ from noeud import Noeud
 
 if __name__ == "__main__":
 	noeuds: List[Noeud] = [Noeud("A"), Noeud("B"), Noeud("C"), Noeud("D"), Noeud("E"), Noeud("F"), Noeud("G")]
-	liens: List[Lien]
+	liens: List[Lien] = []
 	liens.append(noeuds[0].Connecte(noeuds[1], 2))
 	liens.append(noeuds[0].Connecte(noeuds[3], 4))
 
@@ -35,3 +35,15 @@ if __name__ == "__main__":
 	graphe: Graphe = Graphe(noeuds, liens)
 	graphe.LancerFourmis(10)
 	print("Lancées !")
+
+	# fourmis: List[Fourmi] = []
+	# for i in range(len(noeuds)):
+	# 	fourmis.append(Fourmi(noeuds[i]))
+
+
+	#------------Affichage----------------
+
+	print(noeuds[1])
+	for i in liens:
+		print(i)
+

@@ -20,6 +20,9 @@ class Graphe:
 		self.a = a
 		self.b = b
 
+	def __str__(self):
+		return "test"
+
 	def Evaporer(self):
 		for lien in self.liens:
 			lien.pheromone *= 1-self.evaporation
