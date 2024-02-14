@@ -8,7 +8,7 @@ class Lien:
 	def __init__(self, noeud1, noeud2, distance = 1):
 		self.noeuds = (noeud1, noeud2)
 		self.distance = distance
-		pheromone = 0.
+		pheromone = 1.
 
 	def Passage(self, a: float):
 		self.pheromone += a / self.distance
