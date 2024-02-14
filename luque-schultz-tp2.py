@@ -32,6 +32,7 @@ if __name__ == "__main__":
 
 	graphe: Graphe = Graphe(noeuds, liens)
 
+
 	fourmis: List[Fourmi] = []
 	for i in range(len(noeuds)):
 		fourmis.append(Fourmi(noeuds[i]))
@@ -42,3 +43,4 @@ if __name__ == "__main__":
 	print(noeuds[1])
 	for i in liens:
 		print(i)
+

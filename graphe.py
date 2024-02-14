@@ -8,7 +8,7 @@ class Lien:
 	def __init__(self, noeud1, noeud2, distance = 1):
 		self.noeuds = (noeud1, noeud2)
 		self.distance = distance
-		self.pheromone = 0.
+		self.pheromone = 1.
 
 	def __str__(self):
 		return f"{self.noeuds[0].label} - {self.noeuds[1].label}, {self.distance}, {self.pheromone}"
