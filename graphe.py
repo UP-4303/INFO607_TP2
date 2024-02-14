@@ -3,12 +3,12 @@ from typing import List, Tuple
 class Lien:
 	noeuds: Tuple[any, any] # TODO type hint
 	distance: int
-	pheromone: int
+	pheromone: float
 
 	def __init__(self, noeud1, noeud2, distance = 1):
 		self.noeuds = (noeud1, noeud2)
 		self.distance = distance
-		pheromone = 0
+		pheromone = 0.
 
 class Noeud:
 	label: str
@@ -21,13 +21,14 @@ class Noeud:
 		lien = Lien(self,other, distance)
 		self.connexions.append(lien)
 		other.connexions.append(lien)
+		return lien
 
 class Graphe:
 	noeuds: List[Noeud]
 	liens: List[Lien]
 	evaporation: float
 	q: int # Nombre de fois que les noeuds doivent être visités
-	a: float # Importance de la distance
+	a: float # Quantité de pheromones laissé sur un lien (à diviser par la distance)
 	b: float # Importance des pheromones
 
 	def __init__(self, noeuds: List[Noeud], liens: List[Lien], evaportation: float = 0.7, q: int = 1, a: float = 1., b: float = 1.):
@@ -37,3 +38,7 @@ class Graphe:
 		self.q = q
 		self.a = a
 		self.b = b
+
+	def Evaporer(self):
+		for lien in self.liens:
+			lien.pheromone *= 1-self.evaporation
