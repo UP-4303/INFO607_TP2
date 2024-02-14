@@ -10,6 +10,9 @@ class Lien:
 		self.distance = distance
 		pheromone = 0.
 
+	def Passage(self, a: float):
+		self.pheromone += a / self.distance
+
 class Noeud:
 	label: str
 	connexions: List[Lien]
