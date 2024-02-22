@@ -39,6 +39,9 @@ class Graphe:
 			self.noeuds[i].x = 0
 			self.noeuds[i].y = 0
 		
+		plt.xlim(-1, 1)
+		plt.ylim(-1, 1)
+		plt.gca().set_aspect('equal', adjustable='box')
 		plt.scatter([noeud.x for noeud in self.noeuds], [noeud.y for noeud in self.noeuds])
 		plt.show()
 
