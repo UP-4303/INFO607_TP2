@@ -3,6 +3,7 @@ from fourmi import Fourmi
 from random import randint
 from lien import Lien
 from noeud import Noeud, strChemin
+import matplotlib.pyplot as plt
 
 class Graphe:
 	noeuds: List[Noeud]
@@ -37,6 +38,9 @@ class Graphe:
 		for i in range(len(self.noeuds)):
 			self.noeuds[i].x = 0
 			self.noeuds[i].y = 0
+		
+		plt.scatter([noeud.x for noeud in self.noeuds], [noeud.y for noeud in self.noeuds])
+		plt.show()
 
 	def __str__(self):
 		return "test"
