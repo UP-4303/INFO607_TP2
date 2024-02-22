@@ -1,5 +1,6 @@
 from typing import List
 from lien import Lien
+import numpy as npy
 
 class Noeud:
 	label: str
@@ -7,10 +8,10 @@ class Noeud:
 	x:float
 	y:float
 
-	def __init__(self, label: str, index, nbPoint):
+	def __init__(self, label: str, index: int, nbPoint: int):
 		self.label = label
 		self.connexions = []
-		coord(index, nbPoint)
+		self.coord(index, nbPoint)
 
 	def Connecte(self, other, distance: int = 1, maxPheromones: float = 10): # TODO type hint
 		lien = Lien(self,other, distance, maxPheromones= maxPheromones)
@@ -18,7 +19,7 @@ class Noeud:
 		other.connexions.append(lien)
 		return lien
 
-	def coord(self, index, nbPoint):
+	def coord(self, index: int, nbPoint: int):
 		angleR = npy.radians((360 / nbPoint)*index)
 		self.x = 2* npy.cos(angleR)
 		self.y = 2* npy.sin(angleR)

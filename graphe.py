@@ -30,19 +30,17 @@ class Graphe:
 		self.b = b
 
 		for i in range(nbNoeuds):
-			noeud = Noeud(str(i))
+			noeud = Noeud(str(i), i, nbNoeuds)
 			for otherNoeud in self.noeuds:
 				self.liens.append(noeud.Connecte(otherNoeud, randint(1, maxDistance), maxPheromones))
 			self.noeuds.append(noeud)
-
-		for i in range(len(self.noeuds)):
-			self.noeuds[i].x = 0
-			self.noeuds[i].y = 0
 		
-		plt.xlim(-1, 1)
-		plt.ylim(-1, 1)
+		plt.xlim(-5, 5)
+		plt.ylim(-5, 5)
 		plt.gca().set_aspect('equal', adjustable='box')
 		plt.scatter([noeud.x for noeud in self.noeuds], [noeud.y for noeud in self.noeuds])
+		for i in range(0, len(self.noeuds), 2):
+			plt.plot([noeud.x for noeud in self.noeuds], [noeud.y for noeud in self.noeuds], '-')
 		plt.show()
 
 	def __str__(self):
