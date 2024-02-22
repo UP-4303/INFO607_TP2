@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
 	# liens.append(noeuds[5].Connecte(noeuds[6], 1))
 
-	graphe: Graphe = Graphe(4, 4, maxPheromones=7)
+	graphe: Graphe = Graphe(10, 10, maxPheromones=10, a=1, evaportation=0.1)
 	graphe.LancerFourmis(graphe.noeuds[0], 100)
 
 	# fourmis: List[Fourmi] = []

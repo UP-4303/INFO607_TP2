@@ -1,3 +1,4 @@
+import time
 from typing import Dict, List
 from fourmi import Fourmi
 from random import randint
@@ -12,6 +13,7 @@ class Graphe:
 	q: int # Nombre de fois que les noeuds doivent être visités
 	a: float # Quantité de pheromones laissé sur un lien (à diviser par la distance)
 	b: float # Importance des pheromones
+	maxPheromones: float
 
 	# def __init__(self, noeuds: List[Noeud], liens: List[Lien], evaportation: float = 0.7, q: int = 1, a: float = 1., b: float = 1.):
 	# 	self.noeuds = noeuds
@@ -25,9 +27,10 @@ class Graphe:
 		self.noeuds = []
 		self.liens: Dict[str, Dict[str, Lien]] = {}
 		self.evaporation =  evaportation
-		self.q = q # 
+		self.q = q # TODO Nombre de passage dans chaque ville
 		self.a = a # Quantité de phéromones déposée à chaque passage
-		self.b = b #
+		self.b = b # TODO
+		self.maxPheromones = maxPheromones
 
 		for i in range(nbNoeuds):
 			self.noeuds.append(Noeud(str(i), i, nbNoeuds))
@@ -38,14 +41,20 @@ class Graphe:
 			for j in range(i+1, len(self.noeuds)):
 				self.liens[self.noeuds[i].label][self.noeuds[j].label] = Lien(randint(1, maxDistance), maxPheromones)
 
-		plt.xlim(-5, 5)
-		plt.ylim(-5, 5)
+		plt.xlim(-1, 1)
+		plt.ylim(-1, 1)
 		plt.gca().set_aspect('equal', adjustable='box')
 		plt.scatter([noeud.x for noeud in self.noeuds], [noeud.y for noeud in self.noeuds])
+		plt.ion()
+		self.AfficherLiens()
+		plt.show()
+
+	def AfficherLiens(self):
 		for i in range(0, len(self.noeuds)-1):
 			for j in range(i+1, len(self.noeuds)):
-				plt.plot([self.noeuds[i].x, self.noeuds[j].x], [self.noeuds[i].y, self.noeuds[j].y], '-', linewidth=(1))
-		plt.show()
+				print(self.liens[self.noeuds[i].label][self.noeuds[j].label].pheromone * 5 / self.maxPheromones)
+				plt.plot([self.noeuds[i].x, self.noeuds[j].x], [self.noeuds[i].y, self.noeuds[j].y], 'r-', linewidth=(self.liens[self.noeuds[i].label][self.noeuds[j].label].pheromone * 5 / self.maxPheromones))
+		plt.draw()
 
 	def __str__(self):
 		return "test"
@@ -54,21 +63,22 @@ class Graphe:
 		for i in range(0, len(self.noeuds)-1):
 			for j in range(i+1, len(self.noeuds)):
 				self.liens[self.noeuds[i].label][self.noeuds[j].label].Evaporer(self.evaporation)
+		self.AfficherLiens()
+		plt.pause(0.1)
 
 	def LancerFourmi(self, depart: Noeud):
 		fourmi = Fourmi(self.noeuds.copy(), depart, self.liens)
 		while(True):
 			if not fourmi.Avancer(self.a, self.b):
 				break
-		if(len(fourmi.aVoir) == 0):
-			print(f"Chemin trouvé : {strChemin(fourmi.chemin)} avec une distance de {fourmi.distanceParcourue}")
+		# if(len(fourmi.aVoir) == 0):
+		# 	print(f"Chemin trouvé : {strChemin(fourmi.chemin)} avec une distance de {fourmi.distanceParcourue}")
+		self.Evaporer()
 
 	def LancerFourmisAleatoirement(self, iterations: int):
 		for i in range(iterations):
 			self.LancerFourmi(self.noeuds[randint(0,len(self.noeuds)-1)])
-			self.Evaporer()
 
 	def LancerFourmis(self, depart: Noeud, iterations: int):
 		for i in range(iterations):
 			self.LancerFourmi(depart)
-			self.Evaporer()

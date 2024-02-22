@@ -13,8 +13,8 @@ class Noeud:
 
 	def coord(self, index: int, nbPoint: int):
 		angleR = npy.radians((360 / nbPoint)*index)
-		self.x = 2* npy.cos(angleR)
-		self.y = 2* npy.sin(angleR)
+		self.x = npy.cos(angleR)
+		self.y = npy.sin(angleR)
 
 # Formate une liste de noeuds comme un chemin, en string
 def strChemin(noeuds: List[Noeud]):
