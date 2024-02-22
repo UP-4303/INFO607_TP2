@@ -1,14 +1,12 @@
 from typing import Tuple
 
 class Lien:
-	noeuds: Tuple[any, any] # TODO type hint
 	distance: int
 	pheromone: float
 	max: float
 	min: float
 
-	def __init__(self, noeud1, noeud2, distance = 1, maxPheromones = 10):
-		self.noeuds = (noeud1, noeud2)
+	def __init__(self, distance = 1, maxPheromones = 10):
 		self.distance = distance
 		self.pheromone = 1.
 		self.max = maxPheromones

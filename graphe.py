@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 from fourmi import Fourmi
 from random import randint
 from lien import Lien
@@ -23,35 +23,40 @@ class Graphe:
 
 	def __init__(self, nbNoeuds: int, maxDistance: int, evaportation: float = 0.7, q: int = 1, a: float = 1., b: float = 1., maxPheromones: float = 10):
 		self.noeuds = []
-		self.liens = []
+		self.liens: Dict[str, Dict[str, Lien]] = {}
 		self.evaporation =  evaportation
-		self.q = q
-		self.a = a
-		self.b = b
+		self.q = q # 
+		self.a = a # Quantité de phéromones déposée à chaque passage
+		self.b = b #
 
 		for i in range(nbNoeuds):
-			noeud = Noeud(str(i), i, nbNoeuds)
-			for otherNoeud in self.noeuds:
-				self.liens.append(noeud.Connecte(otherNoeud, randint(1, maxDistance), maxPheromones))
-			self.noeuds.append(noeud)
-		
+			self.noeuds.append(Noeud(str(i), i, nbNoeuds))
+		self.noeuds.sort(key=(lambda noeud: noeud.label))
+
+		for i in range(0, len(self.noeuds)-1):
+			self.liens[self.noeuds[i].label] = {}
+			for j in range(i+1, len(self.noeuds)):
+				self.liens[self.noeuds[i].label][self.noeuds[j].label] = Lien(randint(1, maxDistance), maxPheromones)
+
 		plt.xlim(-5, 5)
 		plt.ylim(-5, 5)
 		plt.gca().set_aspect('equal', adjustable='box')
 		plt.scatter([noeud.x for noeud in self.noeuds], [noeud.y for noeud in self.noeuds])
-		for i in range(0, len(self.noeuds), 2):
-			plt.plot([noeud.x for noeud in self.noeuds], [noeud.y for noeud in self.noeuds], '-')
+		for i in range(0, len(self.noeuds)-1):
+			for j in range(i+1, len(self.noeuds)):
+				plt.plot([self.noeuds[i].x, self.noeuds[j].x], [self.noeuds[i].y, self.noeuds[j].y], '-', linewidth=(1))
 		plt.show()
 
 	def __str__(self):
 		return "test"
 
 	def Evaporer(self):
-		for lien in self.liens:
-			lien.Evaporer(self.evaporation)
+		for i in range(0, len(self.noeuds)-1):
+			for j in range(i+1, len(self.noeuds)):
+				self.liens[self.noeuds[i].label][self.noeuds[j].label].Evaporer(self.evaporation)
 
 	def LancerFourmi(self, depart: Noeud):
-		fourmi = Fourmi(self.noeuds.copy(), depart)
+		fourmi = Fourmi(self.noeuds.copy(), depart, self.liens)
 		while(True):
 			if not fourmi.Avancer(self.a, self.b):
 				break
