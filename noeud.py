@@ -4,20 +4,12 @@ import numpy as npy
 
 class Noeud:
 	label: str
-	connexions: List[Lien]
 	x:float
 	y:float
 
 	def __init__(self, label: str, index: int, nbPoint: int):
 		self.label = label
-		self.connexions = []
 		self.coord(index, nbPoint)
-
-	def Connecte(self, other, distance: int = 1, maxPheromones: float = 10): # TODO type hint
-		lien = Lien(self,other, distance, maxPheromones= maxPheromones)
-		self.connexions.append(lien)
-		other.connexions.append(lien)
-		return lien
 
 	def coord(self, index: int, nbPoint: int):
 		angleR = npy.radians((360 / nbPoint)*index)
