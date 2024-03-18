@@ -17,3 +17,9 @@ class Lien:
 
 	def Evaporer(self, evaporation: float):
 		self.pheromone = max(self.min, self.pheromone * (1 - evaporation))
+
+	def __str__(self):
+		return str(self.distance)
+	
+	def StrPheromones(self):
+		return str(int(self.pheromone))

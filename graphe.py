@@ -1,10 +1,10 @@
-import time
 from typing import Dict, List
 from fourmi import Fourmi
 from random import randint
 from lien import Lien
-from noeud import Noeud, strChemin
+from noeud import Noeud
 import matplotlib.pyplot as plt
+from tabulate import tabulate
 
 class Graphe:
 	noeuds: List[Noeud]
@@ -36,7 +36,7 @@ class Graphe:
 			self.noeuds.append(Noeud(str(i), i, nbNoeuds))
 		self.noeuds.sort(key=(lambda noeud: noeud.label))
 
-		for i in range(0, len(self.noeuds)-1):
+		for i in range(len(self.noeuds)):
 			self.liens[self.noeuds[i].label] = {}
 			for j in range(i+1, len(self.noeuds)):
 				self.liens[self.noeuds[i].label][self.noeuds[j].label] = Lien(randint(1, maxDistance), maxPheromones)
@@ -50,19 +50,38 @@ class Graphe:
 		plt.show()
 
 	def AfficherLiens(self):
+		plt.lines = []
 		for i in range(0, len(self.noeuds)-1):
 			for j in range(i+1, len(self.noeuds)):
-				print(self.liens[self.noeuds[i].label][self.noeuds[j].label].pheromone * 5 / self.maxPheromones)
-				plt.plot([self.noeuds[i].x, self.noeuds[j].x], [self.noeuds[i].y, self.noeuds[j].y], 'r-', linewidth=(self.liens[self.noeuds[i].label][self.noeuds[j].label].pheromone * 5 / self.maxPheromones))
-		plt.draw()
+				plt.plot([self.noeuds[i].x, self.noeuds[j].x], [self.noeuds[i].y, self.noeuds[j].y], 'r-', linewidth=(self.liens[self.noeuds[i].label][self.noeuds[j].label].pheromone * 10 / self.maxPheromones))
 
 	def __str__(self):
-		return "test"
+		table = self.liens.copy()
+		indexs = []
+		keys = list(table.keys())
+		for i in range(len(keys)):
+			indexs.append(keys[i])
+			table[keys[i]] = ['' for i in range(i)] + [str(lien) for lien in table[keys[i]].values()]
+			
+		indexs.pop(0)
+		return tabulate(table, headers="keys", showindex=indexs)
+	
+	def StrPheromones(self):
+		table = self.liens.copy()
+		indexs = []
+		keys = list(table.keys())
+		for i in range(len(keys)):
+			indexs.append(keys[i])
+			table[keys[i]] = ['' for i in range(i)] + [lien.StrPheromones() for lien in table[keys[i]].values()]
+			
+		indexs.pop(0)
+		return tabulate(table, headers="keys", showindex=indexs)
 
 	def Evaporer(self):
 		for i in range(0, len(self.noeuds)-1):
 			for j in range(i+1, len(self.noeuds)):
 				self.liens[self.noeuds[i].label][self.noeuds[j].label].Evaporer(self.evaporation)
+		print(self.StrPheromones())
 		self.AfficherLiens()
 		plt.pause(0.1)
 

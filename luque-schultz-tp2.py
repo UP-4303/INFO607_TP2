@@ -1,6 +1,7 @@
 # Mattéo LUQUE L3 CMI Informatique
 # Paul SCHULTZ L3 Informatique groupe 1
 
+from time import sleep
 from typing import List
 from graphe import Graphe
 from lien import Lien
@@ -29,8 +30,13 @@ if __name__ == "__main__":
 
 	# liens.append(noeuds[5].Connecte(noeuds[6], 1))
 
-	graphe: Graphe = Graphe(10, 10, maxPheromones=10, a=1, evaportation=0.1)
-	graphe.LancerFourmis(graphe.noeuds[0], 100)
+	graphe: Graphe = Graphe(10, 20, maxPheromones=50, a=4, evaportation=0.05)
+	print(graphe)
+	graphe.LancerFourmis(graphe.noeuds[0], 500)
+	print("Toutes les fourmis ont été lancées")
+	print(graphe)
+	while(True):
+		sleep(10)
 
 	# fourmis: List[Fourmi] = []
 	# for i in range(len(noeuds)):
